@@ -17,8 +17,8 @@ M = zeros(200,3);
 V = zeros(200,3);
 T = zeros(200,1);
 
-for i=1:1:20000
- n=(i-1)/1+1;
+for i=1:10:20000
+ n=(i-1)/10+1;
  n= round(n);
  M(n,:) = m(i,:);
  V(n,:) = v(i,:);
@@ -52,12 +52,11 @@ State_X=[M,V];
 % end
 s = size(M,1);
 x = zeros(s,6);
-x_p = zeros(s,6);
 x(1,:)=ones(1,6)*1e-3;
 K = zeros(6,6,s);
 K(:,:,1) = eye(6);
 
-for i=2:50
+for i=2:s
     
     dt = T(i)-T(i-1);
     x_k_1 = x(i-1,:);
@@ -71,14 +70,14 @@ for i=2:50
 
     
     F = calc_F(x_k_1,dt);
-    x_p(i,:) = predict_x(F,x_k_1);
+    x_p = predict_x(F,x_k_1)
     K_p = predict_K(F,K_k_1);
 
     H = calc_H(x_k_1,rE,VE);
     a = calc_a(K_p,H,R);
     %y = calc_y(H);
     
-    x(i,:) = refine_x(x_p(i,:),a,H,R)'; 
+    x(i,:) = refine_x(x_p,a,H,R)'; 
     K(:,:,i) = refine_K(a,H,K_p); 
     save('Kalman_filter_3.mat');
     

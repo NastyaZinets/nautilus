@@ -2,9 +2,7 @@ function [H] = calc_H(State,rE,VE)
 r=State(1:3);
 V=State(4:6)-VE;
 
-R_1 = rE + 64e5* cross(r,[0 0 1])/norm(cross(r,[0 0 1]));
-R_2 = rE - 64e5* cross(r,[0 0 1])/norm(cross(r,[0 0 1]));
-
+R_1 = rE + cross(r,[0 0 1])/norm(cross(r,[0 0 1]));
 r_12 = r - R_1;
 r_23 = r - R_2;
 
